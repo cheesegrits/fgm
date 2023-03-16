@@ -108,8 +108,8 @@ class LocationMapTableWidget extends MapTableWidget
                 ->form($this->getFormSchema()),
             Tables\Actions\EditAction::make()
                 ->form($this->getFormSchema()),
-//            GoToAction::make()
-//                ->zoom(14),
+            GoToAction::make()
+                ->zoom(14),
 //            RadiusAction::make(),
         ];
     }

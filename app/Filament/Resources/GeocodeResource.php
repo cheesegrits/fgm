@@ -57,8 +57,11 @@ class GeocodeResource extends Resource
                         'street' => '%n %S',
                     ])
                     ->prefix('Choose:')
-                    ->placeholder('Start typing and address ...')
-                    ->maxLength(1024),
+                    ->placeholder('Start typing an address or click Geolocate button ...')
+                    ->maxLength(1024)
+	                ->geolocate()
+	                ->geolocateIcon('heroicon-s-map')
+                    ->geocodeOnLoad(),
 
                 WidgetMap::make('widget_map')
                     ->markers(function ($model) {
