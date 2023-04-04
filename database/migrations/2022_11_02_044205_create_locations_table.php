@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('zip')->nullable();
             $table->string('formatted_address', 1024)->nullable();
             $table->text('description');
+            $table->json('geojson');
             $table->foreignId('state_id')->nullable()->constrained();
             $table->tinyInteger('processed')->nullable();
             $table->timestamps();
