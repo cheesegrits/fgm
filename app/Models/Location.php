@@ -21,6 +21,7 @@ class Location extends Model
         'processed',
         'location',
         'description',
+        'geojson',
     ];
 
     protected $appends = [
@@ -30,6 +31,7 @@ class Location extends Model
 
     protected $casts = [
         'processed' => 'bool',
+        'geojson' => 'array',
     ];
 
     /**
