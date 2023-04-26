@@ -6,6 +6,7 @@ use App\Filament\Resources\LocationResource\Pages;
 use App\Models\Location;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Cheesegrits\FilamentGoogleMaps\Filters\RadiusFilter;
+use Cheesegrits\FilamentGoogleMaps\Helpers\MapsHelper;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -30,6 +31,8 @@ class LocationResource extends Resource
                     ->maxLength(32),
                 Forms\Components\TextInput::make('lng')
                     ->maxLength(32),
+                Forms\Components\TextInput::make('premise')
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('street')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('city')
@@ -54,22 +57,23 @@ class LocationResource extends Resource
                         'zip'    => '%z',
                         'state'  => '%A1',
                         'street' => '%n %S',
+                        'premise' => '%p',
                     ])
-                    //->drawingControl()
-                    //->drawingControlPosition(MapsHelper::POSITION_BOTTOM_CENTER)
-                    //->drawingField('geojson')
-                    //->drawingModes([
-                    //    'marker'    => true,
-                    //    'circle'    => true,
-                    //    'polygon'   => true,
-                    //    'polyline'  => true,
-                    //    'rectangle' => true,
-                    //])
-                    ->geoJson(
-                        'https://fgm.test/storage/AGEBS01.geojson'
-                    )
-                    ->geoJsonVisible(false)
-                    ->geoJsonContainsField('geojson', 'CVEGEO')
+                    ->drawingControl()
+                    ->drawingControlPosition(MapsHelper::POSITION_BOTTOM_CENTER)
+                    ->drawingField('geojson')
+                    ->drawingModes([
+                        'marker'    => true,
+                        'circle'    => true,
+                        'polygon'   => true,
+                        'polyline'  => true,
+                        'rectangle' => true,
+                    ])
+                    //->geoJson(
+                    //    'https://fgm.test/storage/AGEBS01.geojson'
+                    //)
+                    //->geoJsonVisible(false)
+                    //->geoJsonContainsField('geojson', 'CVEGEO')
                     ->geolocate()
                     ->geolocateLabel('Set Location')
                     ->columnSpan(2),

@@ -13,6 +13,7 @@ class Location extends Model
         'name',
         'lat',
         'lng',
+        'premise',
         'street',
         'city',
         'state',

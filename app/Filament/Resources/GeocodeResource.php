@@ -9,7 +9,6 @@ use Cheesegrits\FilamentGoogleMaps\Actions\StaticMapAction;
 use Cheesegrits\FilamentGoogleMaps\Actions\WidgetMapAction;
 use Cheesegrits\FilamentGoogleMaps\Columns\MapColumn;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
-use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Cheesegrits\FilamentGoogleMaps\Fields\WidgetMap;
 use Cheesegrits\FilamentGoogleMaps\Filters\RadiusFilter;
 use Filament\Forms;
@@ -17,9 +16,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class GeocodeResource extends Resource
 {
@@ -31,12 +28,15 @@ class GeocodeResource extends Resource
     {
         return $form
             ->schema([
+
                 Forms\Components\TextInput::make('name')
                     ->maxLength(256),
                 Forms\Components\TextInput::make('lat')
                     ->maxLength(32),
                 Forms\Components\TextInput::make('lng')
                     ->maxLength(32),
+                Forms\Components\TextInput::make('premise')
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('street')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('city')
@@ -51,22 +51,23 @@ class GeocodeResource extends Resource
                     ->isLocation()
                     ->updateLatLng()
                     ->reverseGeocode([
-                        'city'   => '%L',
-                        'zip'    => '%z',
-                        'state'  => '%A1',
-                        'street' => '%n %S',
+                        'city'    => '%L',
+                        'zip'     => '%z',
+                        'state'   => '%A1',
+                        'street'  => '%n %S',
+                        'premise' => '%p',
                     ])
                     ->prefix('Choose:')
                     ->placeholder('Start typing an address or click Geolocate button ...')
                     ->maxLength(1024)
-	                ->geolocate()
-	                ->geolocateIcon('heroicon-s-map')
+                    ->geolocate()
+                    ->geolocateIcon('heroicon-s-map')
                     ->geocodeOnLoad(),
 
                 WidgetMap::make('widget_map')
                     ->markers(function ($model) {
-                        $markers = [];
-                        $records = Geocode::all();
+                        $markers      = [];
+                        $records      = Geocode::all();
                         $latLngFields = $model::getLatLngAttributes();
 
                         $records->each(function (Model $record) use (&$markers, $latLngFields) {
@@ -74,7 +75,7 @@ class GeocodeResource extends Resource
                             $lngField = $latLngFields['lng'];
 
                             $markers[] = [
-                                'location'  => [
+                                'location' => [
                                     'lat' => $record->{$latField} ? round(floatval($record->{$latField}), 8) : 0,
                                     'lng' => $record->{$lngField} ? round(floatval($record->{$lngField}), 8) : 0,
                                 ],
@@ -84,6 +85,7 @@ class GeocodeResource extends Resource
                         return $markers;
 
                     })
+                    ->columnSpan(2),
 
             ]);
 
@@ -148,10 +150,10 @@ class GeocodeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGeocodes::route('/'),
+            'index'  => Pages\ListGeocodes::route('/'),
             'create' => Pages\CreateGeocode::route('/create'),
-            'view' => Pages\ViewGeocode::route('/{record}'),
-            'edit' => Pages\EditGeocode::route('/{record}/edit'),
+            'view'   => Pages\ViewGeocode::route('/{record}'),
+            'edit'   => Pages\EditGeocode::route('/{record}/edit'),
         ];
     }
 }
