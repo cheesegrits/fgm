@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->string('name', 256)->nullable();
             $table->string('lat', 32)->nullable();
             $table->string('lng', 32)->nullable();
+            $table->string('premise')->nullable();
             $table->string('street')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();
