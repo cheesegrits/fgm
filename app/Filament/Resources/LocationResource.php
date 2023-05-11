@@ -32,8 +32,22 @@ class LocationResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->maxLength(256),
                 Forms\Components\TextInput::make('lat')
+	                ->afterStateUpdated(function ($state, callable $get, callable $set) {
+		                $set('location', [
+			                'lat' => floatVal($state),
+			                'lng' => floatVal($get('lng')),
+		                ]);
+	                })
+	                ->lazy()
                     ->maxLength(32),
                 Forms\Components\TextInput::make('lng')
+	                ->afterStateUpdated(function ($state, callable $get, callable $set) {
+		                $set('location', [
+			                'lat' => floatval($get('lat')),
+			                'lng' => floatVal($state),
+		                ]);
+	                })
+	                ->lazy()
                     ->maxLength(32),
                 Forms\Components\TextInput::make('street')
                     ->maxLength(255),
@@ -45,12 +59,29 @@ class LocationResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('formatted_address')
                     ->maxLength(1024),
+
+//	            Geocomplete::make('location')
+////                    ->types(['airport'])
+////                    ->placeField('name')
+//		            ->isLocation()
+//		            ->updateLatLng()
+//		            ->reverseGeocode([
+//			            'city'   => '%L',
+//			            'zip'    => '%z',
+//			            'state'  => '%A1',
+//			            'street' => '%n %S',
+//		            ])
+//		            ->prefix('Choose:')
+//		            ->placeholder('Start typing an address ...')
+//		            ->maxLength(1024)
+//		            ->geolocate(),
+
                 Map::make('location')
                     ->debug()
                     ->clickable()
-//                    ->layers([
-//                        'https://googlearchive.github.io/js-v2-samples/ggeoxml/cta.kml',
-//                    ])
+                    ->layers([
+                        'https://googlearchive.github.io/js-v2-samples/ggeoxml/cta.kml',
+                    ])
                     ->autocomplete('formatted_address')
                     ->autocompleteReverse()
                     ->reverseGeocode([
@@ -58,7 +89,8 @@ class LocationResource extends Resource
                         'zip' => '%z',
                         'state' => '%A1',
                         'street' => '%n %S',
-                    ]),
+                    ])
+                    ->geolocate(),
             ]);
     }
 

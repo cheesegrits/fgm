@@ -2,15 +2,10 @@
 
 namespace App\Providers\Filament;
 
-use Illuminate\Support\Facades\Blade;
 use Filament\Context;
 use Filament\ContextProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Http\Middleware\MirrorConfigToSubpackages;
-use Filament\Navigation\Sidebar;
-use Filament\Notifications\Http\Livewire\Notifications;
-use Filament\Notifications\Notification;
 use Filament\Pages;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -49,7 +44,6 @@ class AdminFilamentProvider extends ContextProvider
                 VerifyCsrfToken::class,
                 SubstituteBindings::class,
                 DispatchServingFilamentEvent::class,
-                MirrorConfigToSubpackages::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

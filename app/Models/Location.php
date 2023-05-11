@@ -19,7 +19,7 @@ class Location extends Model
         'zip',
         'full_address',
         'processed',
-        'location',
+//        'location',
         'description',
     ];
 

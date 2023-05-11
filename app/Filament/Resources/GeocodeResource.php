@@ -33,56 +33,57 @@ class GeocodeResource extends Resource
             ->schema([
 //                Forms\Components\Group::make()
 //                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->maxLength(256),
-                        Forms\Components\TextInput::make('lat')
-                            ->maxLength(32),
-                        Forms\Components\TextInput::make('lng')
-                            ->maxLength(32),
-                        Forms\Components\TextInput::make('street')
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('city')
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('state')
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('zip')
-                            ->maxLength(255),
-                        Geocomplete::make('location')
+                Forms\Components\TextInput::make('name')
+                    ->maxLength(256),
+                Forms\Components\TextInput::make('lat')
+                    ->maxLength(32),
+                Forms\Components\TextInput::make('lng')
+                    ->maxLength(32),
+                Forms\Components\TextInput::make('street')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('city')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('state')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('zip')
+                    ->maxLength(255),
+                Geocomplete::make('location')
 //                    ->types(['airport'])
 //                    ->placeField('name')
-                            ->isLocation()
-                            ->updateLatLng()
-                            ->reverseGeocode([
-                                'city'   => '%L',
-                                'zip'    => '%z',
-                                'state'  => '%A1',
-                                'street' => '%n %S',
-                            ])
-                            ->prefix('Choose:')
-                            ->placeholder('Start typing and address ...')
-                            ->maxLength(1024),
+                    ->isLocation()
+                    ->updateLatLng()
+                    ->reverseGeocode([
+                        'city'   => '%L',
+                        'zip'    => '%z',
+                        'state'  => '%A1',
+                        'street' => '%n %S',
+                    ])
+                    ->prefix('Choose:')
+                    ->placeholder('Start typing an address ...')
+                    ->maxLength(1024)
+                    ->geolocate(),
 
-                        WidgetMap::make('widget_map')
-                            ->markers(function ($model) {
-                                $markers      = [];
-                                $records      = Geocode::all();
-                                $latLngFields = $model::getLatLngAttributes();
+                WidgetMap::make('widget_map')
+                    ->markers(function ($model) {
+                        $markers      = [];
+                        $records      = Geocode::all();
+                        $latLngFields = $model::getLatLngAttributes();
 
-                                $records->each(function (Model $record) use (&$markers, $latLngFields) {
-                                    $latField = $latLngFields['lat'];
-                                    $lngField = $latLngFields['lng'];
+                        $records->each(function (Model $record) use (&$markers, $latLngFields) {
+                            $latField = $latLngFields['lat'];
+                            $lngField = $latLngFields['lng'];
 
-                                    $markers[] = [
-                                        'location' => [
-                                            'lat' => $record->{$latField} ? round(floatval($record->{$latField}), 8) : 0,
-                                            'lng' => $record->{$lngField} ? round(floatval($record->{$lngField}), 8) : 0,
-                                        ],
-                                    ];
-                                });
+                            $markers[] = [
+                                'location' => [
+                                    'lat' => $record->{$latField} ? round(floatval($record->{$latField}), 8) : 0,
+                                    'lng' => $record->{$lngField} ? round(floatval($record->{$lngField}), 8) : 0,
+                                ],
+                            ];
+                        });
 
-                                return $markers;
-
-                            })
+                        return $markers;
+                    })
+                ->columnSpan(2)
 
 //                    ])
             ]);

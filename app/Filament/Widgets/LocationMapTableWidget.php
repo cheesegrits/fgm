@@ -8,10 +8,8 @@ use Cheesegrits\FilamentGoogleMaps\Actions\RadiusAction;
 use Cheesegrits\FilamentGoogleMaps\Filters\MapIsFilter;
 use Cheesegrits\FilamentGoogleMaps\Filters\RadiusFilter;
 use Cheesegrits\FilamentGoogleMaps\Widgets\MapTableWidget;
-use Cheesegrits\FilamentGoogleMaps\Columns\MapColumn;
-use Filament\Tables;
 use Filament\Forms;
-use Filament\Tables\Table;
+use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 
 class LocationMapTableWidget extends MapTableWidget
@@ -67,8 +65,6 @@ class LocationMapTableWidget extends MapTableWidget
         return [
             Tables\Columns\TextColumn::make('name')
                 ->searchable(),
-//                Tables\Columns\TextColumn::make('lat'),
-//                Tables\Columns\TextColumn::make('lng'),
             Tables\Columns\TextColumn::make('street')
                 ->searchable(),
             Tables\Columns\TextColumn::make('city')
@@ -78,16 +74,6 @@ class LocationMapTableWidget extends MapTableWidget
                 ->searchable()
                 ->sortable(),
             Tables\Columns\TextColumn::make('zip'),
-//                Tables\Columns\TextColumn::make('formatted_address'),
-//                MapColumn::make('location'),
-//			MapColumn::make('location')
-//				->extraImgAttributes(
-//					fn ($record): array => ['title' => $record->lat . ',' . $record->lng]
-//				)
-//				->height('150')
-//				->width('250')
-//				->type('hybrid')
-//				->zoom(15),
         ];
     }
 
@@ -109,8 +95,10 @@ class LocationMapTableWidget extends MapTableWidget
     protected function getTableActions(): array
     {
         return [
-            Tables\Actions\ViewAction::make(),
-            Tables\Actions\EditAction::make(),
+            Tables\Actions\ViewAction::make()
+                ->form($this->getFormSchema()),
+            Tables\Actions\EditAction::make()
+                ->form($this->getFormSchema()),
             GoToAction::make()
                 ->zoom(fn () => 14),
             RadiusAction::make(),

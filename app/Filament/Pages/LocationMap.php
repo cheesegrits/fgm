@@ -2,7 +2,7 @@
 
 namespace App\Filament\Pages;
 
-use App\Filament\Widgets\LocationMapTableWidget;
+use App\Filament\Widgets\LocationMapWidget;
 use Filament\Pages\Page;
 
 class LocationMap extends Page
@@ -14,7 +14,8 @@ class LocationMap extends Page
     protected function getHeaderWidgets(): array
     {
         return [
-            LocationMapTableWidget::class
+//            LocationMapTableWidget::class,
+            LocationMapWidget::class,
         ];
     }
 
