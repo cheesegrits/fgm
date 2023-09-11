@@ -3,21 +3,18 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LocationResource\Pages;
-//use App\Filament\Resources\LocationResource\RelationManagers;
 use App\Models\Location;
-use Cheesegrits\FilamentGoogleMaps\Actions\GoToAction;
 use Cheesegrits\FilamentGoogleMaps\Actions\RadiusAction;
-use Cheesegrits\FilamentGoogleMaps\Columns\MapColumn;
-use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Cheesegrits\FilamentGoogleMaps\Filters\RadiusFilter;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Table;
+
+//use App\Filament\Resources\LocationResource\RelationManagers;
 
 class LocationResource extends Resource
 {
@@ -32,22 +29,22 @@ class LocationResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->maxLength(256),
                 Forms\Components\TextInput::make('lat')
-	                ->afterStateUpdated(function ($state, callable $get, callable $set) {
-		                $set('location', [
-			                'lat' => floatVal($state),
-			                'lng' => floatVal($get('lng')),
-		                ]);
-	                })
-	                ->lazy()
+                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                        $set('location', [
+                            'lat' => floatVal($state),
+                            'lng' => floatVal($get('lng')),
+                        ]);
+                    })
+                    ->lazy()
                     ->maxLength(32),
                 Forms\Components\TextInput::make('lng')
-	                ->afterStateUpdated(function ($state, callable $get, callable $set) {
-		                $set('location', [
-			                'lat' => floatval($get('lat')),
-			                'lng' => floatVal($state),
-		                ]);
-	                })
-	                ->lazy()
+                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                        $set('location', [
+                            'lat' => floatval($get('lat')),
+                            'lng' => floatVal($state),
+                        ]);
+                    })
+                    ->lazy()
                     ->maxLength(32),
                 Forms\Components\TextInput::make('street')
                     ->maxLength(255),
@@ -60,37 +57,53 @@ class LocationResource extends Resource
                 Forms\Components\TextInput::make('formatted_address')
                     ->maxLength(1024),
 
-//	            Geocomplete::make('location')
-////                    ->types(['airport'])
-////                    ->placeField('name')
-//		            ->isLocation()
-//		            ->updateLatLng()
-//		            ->reverseGeocode([
-//			            'city'   => '%L',
-//			            'zip'    => '%z',
-//			            'state'  => '%A1',
-//			            'street' => '%n %S',
-//		            ])
-//		            ->prefix('Choose:')
-//		            ->placeholder('Start typing an address ...')
-//		            ->maxLength(1024)
-//		            ->geolocate(),
+                //	            Geocomplete::make('location')
+                ////                    ->types(['airport'])
+                ////                    ->placeField('name')
+                //		            ->isLocation()
+                //		            ->updateLatLng()
+                //		            ->reverseGeocode([
+                //			            'city'   => '%L',
+                //			            'zip'    => '%z',
+                //			            'state'  => '%A1',
+                //			            'street' => '%n %S',
+                //		            ])
+                //		            ->prefix('Choose:')
+                //		            ->placeholder('Start typing an address ...')
+                //		            ->maxLength(1024)
+                //		            ->geolocate(),
 
                 Map::make('location')
+                    ->reactive()
+                    ->afterStateUpdated(function ($state) {
+                        $foo = 1;
+                    })
+                    ->drawingControl()
+                    ->defaultLocation([39.526610, -107.727261])
+                    ->mapControls([
+                        'zoomControl' => true,
+                    ])
                     ->debug()
                     ->clickable()
-                    ->layers([
-                        'https://googlearchive.github.io/js-v2-samples/ggeoxml/cta.kml',
-                    ])
+//                    ->layers([
+//                        'https://googlearchive.github.io/js-v2-samples/ggeoxml/cta.kml',
+//                    ])
                     ->autocomplete('formatted_address')
                     ->autocompleteReverse()
                     ->reverseGeocode([
-                        'city' => '%L',
-                        'zip' => '%z',
-                        'state' => '%A1',
+                        'city'   => '%L',
+                        'zip'    => '%z',
+                        'state'  => '%A1',
                         'street' => '%n %S',
                     ])
-                    ->geolocate(),
+                    ->geolocate()
+//                    ->reverseGeocodeUsing(function (callable $set, array $results) {
+//                        $set('city', 'foo bar');
+//                    })
+//                    ->placeUpdatedUsing(function (callable $set, array $place) {
+//                        $set('city', 'foo wibble');
+//                    })
+                    ->columnSpan(2),
             ]);
     }
 
@@ -100,35 +113,35 @@ class LocationResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-//                Tables\Columns\TextColumn::make('lat'),
-//                Tables\Columns\TextColumn::make('lng'),
+                //                Tables\Columns\TextColumn::make('lat'),
+                //                Tables\Columns\TextColumn::make('lng'),
                 Tables\Columns\TextColumn::make('street'),
                 Tables\Columns\TextColumn::make('city')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('state')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('zip'),
-//                Tables\Columns\TextColumn::make('formatted_address'),
-//                MapColumn::make('location'),
-//                Tables\Columns\TextColumn::make('created_at')
-//                    ->dateTime(),
-//                Tables\Columns\TextColumn::make('updated_at')
-//                    ->dateTime(),
+                //                Tables\Columns\TextColumn::make('formatted_address'),
+                //                MapColumn::make('location'),
+                //                Tables\Columns\TextColumn::make('created_at')
+                //                    ->dateTime(),
+                //                Tables\Columns\TextColumn::make('updated_at')
+                //                    ->dateTime(),
             ])
             ->filters([
                     Tables\Filters\TernaryFilter::make('processed'),
                     RadiusFilter::make('radius')
                         ->latitude('lat')
                         ->longitude('lng')
-                        ->selectUnit(),
-//                    ->section('Radius Search'),
+                        ->selectUnit()
+                        ->section('Radius Search'),
                 ]
             )
-            ->filtersLayout(Tables\Filters\Layout::Popover)
+            ->filtersLayout(FiltersLayout::Dropdown)
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                GoToAction::make(),
+                RadiusAction::make('radius'),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

@@ -12,7 +12,7 @@ class ListLocations extends ListRecords
 
     protected static ?string $title = "All Locations";
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),

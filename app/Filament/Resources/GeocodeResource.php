@@ -9,17 +9,15 @@ use Cheesegrits\FilamentGoogleMaps\Actions\StaticMapAction;
 use Cheesegrits\FilamentGoogleMaps\Actions\WidgetMapAction;
 use Cheesegrits\FilamentGoogleMaps\Columns\MapColumn;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
-use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Cheesegrits\FilamentGoogleMaps\Fields\WidgetMap;
 use Cheesegrits\FilamentGoogleMaps\Filters\RadiusFilter;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class GeocodeResource extends Resource
 {
@@ -31,8 +29,6 @@ class GeocodeResource extends Resource
     {
         return $form
             ->schema([
-//                Forms\Components\Group::make()
-//                    ->schema([
                 Forms\Components\TextInput::make('name')
                     ->maxLength(256),
                 Forms\Components\TextInput::make('lat')
@@ -48,25 +44,32 @@ class GeocodeResource extends Resource
                 Forms\Components\TextInput::make('zip')
                     ->maxLength(255),
                 Geocomplete::make('location')
-//                    ->types(['airport'])
-//                    ->placeField('name')
+                    //                    ->types(['airport'])
+                    //                    ->placeField('name')
+                    ->geocodeOnLoad()
                     ->isLocation()
                     ->updateLatLng()
                     ->reverseGeocode([
-                        'city'   => '%L',
-                        'zip'    => '%z',
-                        'state'  => '%A1',
-                        'street' => '%n %S',
+                        'city'  => '%L',
+                        'zip'   => '%z',
+                        'state' => '%A1',
+                        //                        'street' => '%n z%S',
                     ])
+                    ->reverseGeocodeUsing(function (callable $set, array $results) {
+                        $set('street', $results['address_components'][1]['long_name']);
+                    })
                     ->prefix('Choose:')
                     ->placeholder('Start typing an address ...')
                     ->maxLength(1024)
                     ->geolocate(),
 
                 WidgetMap::make('widget_map')
+                    ->mapControls([
+                        'zoomControl' => true,
+                    ])
                     ->markers(function ($model) {
-                        $markers      = [];
-                        $records      = Geocode::all();
+                        $markers = [];
+                        $records = Geocode::all();
                         $latLngFields = $model::getLatLngAttributes();
 
                         $records->each(function (Model $record) use (&$markers, $latLngFields) {
@@ -83,9 +86,7 @@ class GeocodeResource extends Resource
 
                         return $markers;
                     })
-                ->columnSpan(2)
-
-//                    ])
+                    ->columnSpan(2)
             ]);
 
     }
@@ -97,9 +98,9 @@ class GeocodeResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
 
-//                Tables\Columns\TextColumn::make('lat'),
-//
-//                Tables\Columns\TextColumn::make('lng'),
+                //                Tables\Columns\TextColumn::make('lat'),
+                //
+                //                Tables\Columns\TextColumn::make('lng'),
 
                 Tables\Columns\TextColumn::make('street'),
 
@@ -111,9 +112,9 @@ class GeocodeResource extends Resource
 
                 Tables\Columns\TextColumn::make('zip'),
 
-//                Tables\Columns\TextColumn::make('formatted_address')
-//                    ->wrap()
-//                    ->searchable(),
+                //                Tables\Columns\TextColumn::make('formatted_address')
+                //                    ->wrap()
+                //                    ->searchable(),
 
                 MapColumn::make('location'),
             ])
@@ -126,7 +127,7 @@ class GeocodeResource extends Resource
                         ->section('Radius Search'),
                 ]
             )
-            ->filtersLayout(Tables\Filters\Layout::Popover)
+            ->filtersLayout(FiltersLayout::Dropdown)
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),

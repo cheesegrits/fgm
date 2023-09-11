@@ -21,7 +21,7 @@ class LocationMapWidget extends MapWidget
 
 	protected static ?bool $fitToBounds = true;
 
-	protected static ?int $zoom = 12;
+	protected static ?int $zoom = 18;
 
 	protected static ?string $markerAction = 'markerAction';
 
@@ -57,7 +57,7 @@ class LocationMapWidget extends MapWidget
 
 				'label' => $location->lat . ',' . $location->lng,
 
-				'id' => $location->id,
+				'id' => $location->getKey(),
 
 				/**
 				 * Optionally you can provide custom icons for the map markers,
@@ -75,6 +75,24 @@ class LocationMapWidget extends MapWidget
 		return $data;
 	}
 
+    public function getConfig(): array
+    {
+        $config = parent::getConfig();
+
+        // Disable points of interest
+        $config['mapConfig']['styles'] = [
+            [
+                'featureType' => 'poi',
+                'elementType' => 'labels',
+                'stylers' => [
+                    ['visibility' => 'off'],
+                ],
+            ],
+        ];
+
+        return $config;
+    }
+
 	public function markerAction(): Action
 	{
 		return Action::make('markerAction')
@@ -91,9 +109,9 @@ class LocationMapWidget extends MapWidget
 				->columns(3)
 			])
 			->record(function (array $arguments) {
-				return Location::find($arguments['model_id']);
+				return array_key_exists('model_id', $arguments) ? Location::find($arguments['model_id']) : null;
 			})
-			->modalActions([]);
+			->modalFooterActions([]);
 	}
 
 }

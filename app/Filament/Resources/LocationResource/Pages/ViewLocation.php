@@ -10,7 +10,7 @@ class ViewLocation extends ViewRecord
 {
     protected static string $resource = LocationResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\EditAction::make(),

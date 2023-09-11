@@ -26,9 +26,9 @@ class LocationMapTableWidget extends MapTableWidget
 
     protected static ?string $mapId = 'incidents';
 
-//    protected static ?bool $filtered = false;
+    protected static ?bool $filtered = true;
 
-    public ?bool $mapIsFilter = true;
+    public ?bool $mapIsFilter = false;
 
     protected function getFormSchema(): array
     {
@@ -102,6 +102,7 @@ class LocationMapTableWidget extends MapTableWidget
             GoToAction::make()
                 ->zoom(fn () => 14),
             RadiusAction::make(),
+
         ];
     }
 
