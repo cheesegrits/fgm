@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "cheesegrits/filament-google-maps": "*",
+        "cheesegrits/filament-google-maps": "^v3.0.4",
         "doctrine/dbal": "^3.5",
         "filament/filament": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
@@ -72,12 +72,5 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": {
-        "local": {
-            "type": "path",
-            "url": "../../gits/filament-google-maps-v3"
-        }
-    }
+    "prefer-stable": true
 }
