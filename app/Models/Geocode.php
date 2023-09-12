@@ -24,7 +24,7 @@ class Geocode extends Model
         'city',
         'state',
         'zip',
-        'full_address',
+        'formatted_address',
         'processed',
         'location',
     ];

@@ -31,10 +31,10 @@ class GeocodeResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->maxLength(256),
-                Forms\Components\TextInput::make('lat')
-                    ->maxLength(32),
-                Forms\Components\TextInput::make('lng')
-                    ->maxLength(32),
+//                Forms\Components\TextInput::make('lat')
+//                    ->maxLength(32),
+//                Forms\Components\TextInput::make('lng')
+//                    ->maxLength(32),
                 Forms\Components\TextInput::make('street')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('city')
@@ -43,12 +43,13 @@ class GeocodeResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('zip')
                     ->maxLength(255),
+//                Geocomplete::make('formatted_address'),
                 Geocomplete::make('location')
                     //                    ->types(['airport'])
                     //                    ->placeField('name')
                     ->geocodeOnLoad()
                     ->isLocation()
-                    ->updateLatLng()
+//                    ->updateLatLng()
                     ->reverseGeocode([
                         'city'  => '%L',
                         'zip'   => '%z',
