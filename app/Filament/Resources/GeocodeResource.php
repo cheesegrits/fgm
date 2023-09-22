@@ -43,7 +43,7 @@ class GeocodeResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('zip')
                     ->maxLength(255),
-//                Geocomplete::make('formatted_address'),
+                Geocomplete::make('formatted_address'),
                 Geocomplete::make('location')
                     //                    ->types(['airport'])
                     //                    ->placeField('name')

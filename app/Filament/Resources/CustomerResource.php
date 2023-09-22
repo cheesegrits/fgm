@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CustomerResource\Pages;
 use App\Models\Customer;
+use Cheesegrits\FilamentGoogleMaps\Actions\RadiusAction;
+use Cheesegrits\FilamentGoogleMaps\Filters\RadiusFilter;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -50,6 +52,18 @@ class CustomerResource extends Resource
                     ->sortable(),
 
                 TextColumn::make('location.name'),
+
+                TextColumn::make('location.formatted_address'),
+            ])
+            ->filters([
+                RadiusFilter::make('radius')
+                    ->attribute('location.name'),
+            ])
+            ->actions([
+                RadiusAction::make('radius')
+                    ->relationship('location')
+                    ->color('primary')
+                    ->icon('heroicon-o-map'),
             ]);
     }
 

@@ -4,14 +4,18 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class User extends Authenticatable
 {
+    use HasRelationships;
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
@@ -63,5 +67,15 @@ class User extends Authenticatable
     {
 //        return str_ends_with($this->email, '@example.com') && $this->hasVerifiedEmail();
         return true;
+    }
+
+    public function customers(): BelongsToMany
+    {
+        return $this->belongsToMany(Customer::class);
+    }
+
+    public function locations(): HasManyDeep
+    {
+        return $this->hasManyDeepFromRelations($this->customers(), (new Customer())->location());
     }
 }

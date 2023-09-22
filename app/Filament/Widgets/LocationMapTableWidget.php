@@ -28,7 +28,33 @@ class LocationMapTableWidget extends MapTableWidget
 
     protected static ?bool $filtered = true;
 
+    protected static bool $collapsible = true;
+
     public ?bool $mapIsFilter = false;
+
+    public function getConfig(): array
+    {
+        $config = parent::getConfig();
+
+        // Disable points of interest
+//        $config['mapConfig']['styles'] = [
+//            [
+//                'featureType' => 'poi',
+//                'elementType' => 'labels',
+//                'stylers' => [
+//                    ['visibility' => 'off'],
+//                ],
+//            ],
+//        ];
+
+//        $config['zoom'] = 5;
+        $config['center'] = [
+            'lat' => 34.730369,
+            'lng' => -86.586104,
+        ];
+
+        return $config;
+    }
 
     protected function getFormSchema(): array
     {
@@ -101,7 +127,7 @@ class LocationMapTableWidget extends MapTableWidget
                 ->form($this->getFormSchema()),
             GoToAction::make()
                 ->zoom(fn () => 14),
-            RadiusAction::make(),
+            RadiusAction::make('location'),
 
         ];
     }

@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('location_id');
+            $table->foreignId('location_id')->constrained();
             $table->timestamps();
         });
     }

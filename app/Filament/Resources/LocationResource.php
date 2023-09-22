@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LocationResource\Pages;
 use App\Models\Location;
 use Cheesegrits\FilamentGoogleMaps\Actions\RadiusAction;
+use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Cheesegrits\FilamentGoogleMaps\Fields\Map;
 use Cheesegrits\FilamentGoogleMaps\Filters\RadiusFilter;
 use Filament\Forms;
@@ -28,24 +29,24 @@ class LocationResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->maxLength(256),
-                Forms\Components\TextInput::make('lat')
-                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                        $set('location', [
-                            'lat' => floatVal($state),
-                            'lng' => floatVal($get('lng')),
-                        ]);
-                    })
-                    ->lazy()
-                    ->maxLength(32),
-                Forms\Components\TextInput::make('lng')
-                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
-                        $set('location', [
-                            'lat' => floatval($get('lat')),
-                            'lng' => floatVal($state),
-                        ]);
-                    })
-                    ->lazy()
-                    ->maxLength(32),
+//                Forms\Components\TextInput::make('lat')
+//                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
+//                        $set('location', [
+//                            'lat' => floatVal($state),
+//                            'lng' => floatVal($get('lng')),
+//                        ]);
+//                    })
+//                    ->lazy()
+//                    ->maxLength(32),
+//                Forms\Components\TextInput::make('lng')
+//                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
+//                        $set('location', [
+//                            'lat' => floatval($get('lat')),
+//                            'lng' => floatVal($state),
+//                        ]);
+//                    })
+//                    ->lazy()
+//                    ->maxLength(32),
                 Forms\Components\TextInput::make('street')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('city')
@@ -57,21 +58,21 @@ class LocationResource extends Resource
                 Forms\Components\TextInput::make('formatted_address')
                     ->maxLength(1024),
 
-                //	            Geocomplete::make('location')
-                ////                    ->types(['airport'])
-                ////                    ->placeField('name')
-                //		            ->isLocation()
-                //		            ->updateLatLng()
-                //		            ->reverseGeocode([
-                //			            'city'   => '%L',
-                //			            'zip'    => '%z',
-                //			            'state'  => '%A1',
-                //			            'street' => '%n %S',
-                //		            ])
-                //		            ->prefix('Choose:')
-                //		            ->placeholder('Start typing an address ...')
-                //		            ->maxLength(1024)
-                //		            ->geolocate(),
+//                	            Geocomplete::make('formatted_address')
+//                //                    ->types(['airport'])
+//                //                    ->placeField('name')
+////                		            ->isLocation()
+////                		            ->updateLatLng()
+//                		            ->reverseGeocode([
+//                			            'city'   => '%L',
+//                			            'zip'    => '%z',
+//                			            'state'  => '%A1',
+//                			            'street' => '%n %S',
+//                		            ])
+//                		            ->prefix('Choose:')
+//                		            ->placeholder('Start typing an address ...')
+//                		            ->maxLength(1024)
+//                		            ->geolocate(),
 
                 Map::make('location')
                     ->reactive()
