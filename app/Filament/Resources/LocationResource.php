@@ -29,24 +29,24 @@ class LocationResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->maxLength(256),
-//                Forms\Components\TextInput::make('lat')
-//                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
-//                        $set('location', [
-//                            'lat' => floatVal($state),
-//                            'lng' => floatVal($get('lng')),
-//                        ]);
-//                    })
-//                    ->lazy()
-//                    ->maxLength(32),
-//                Forms\Components\TextInput::make('lng')
-//                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
-//                        $set('location', [
-//                            'lat' => floatval($get('lat')),
-//                            'lng' => floatVal($state),
-//                        ]);
-//                    })
-//                    ->lazy()
-//                    ->maxLength(32),
+                Forms\Components\TextInput::make('lat')
+                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                        $set('location', [
+                            'lat' => floatVal($state),
+                            'lng' => floatVal($get('lng')),
+                        ]);
+                    })
+                    ->lazy()
+                    ->maxLength(32),
+                Forms\Components\TextInput::make('lng')
+                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                        $set('location', [
+                            'lat' => floatval($get('lat')),
+                            'lng' => floatVal($state),
+                        ]);
+                    })
+                    ->lazy()
+                    ->maxLength(32),
                 Forms\Components\TextInput::make('street')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('city')
@@ -58,26 +58,27 @@ class LocationResource extends Resource
                 Forms\Components\TextInput::make('formatted_address')
                     ->maxLength(1024),
 
-//                	            Geocomplete::make('formatted_address')
-//                //                    ->types(['airport'])
-//                //                    ->placeField('name')
-////                		            ->isLocation()
-////                		            ->updateLatLng()
-//                		            ->reverseGeocode([
-//                			            'city'   => '%L',
-//                			            'zip'    => '%z',
-//                			            'state'  => '%A1',
-//                			            'street' => '%n %S',
-//                		            ])
-//                		            ->prefix('Choose:')
-//                		            ->placeholder('Start typing an address ...')
-//                		            ->maxLength(1024)
-//                		            ->geolocate(),
+                //                	            Geocomplete::make('formatted_address')
+                //                //                    ->types(['airport'])
+                //                //                    ->placeField('name')
+                ////                		            ->isLocation()
+                ////                		            ->updateLatLng()
+                //                		            ->reverseGeocode([
+                //                			            'city'   => '%L',
+                //                			            'zip'    => '%z',
+                //                			            'state'  => '%A1',
+                //                			            'street' => '%n %S',
+                //                		            ])
+                //                		            ->prefix('Choose:')
+                //                		            ->placeholder('Start typing an address ...')
+                //                		            ->maxLength(1024)
+                //                		            ->geolocate(),
 
                 Map::make('location')
                     ->reactive()
-                    ->afterStateUpdated(function ($state) {
-                        $foo = 1;
+                    ->afterStateUpdated(function ($state, callable $get, callable $set) {
+                        $set('lat', $state['lat']);
+                        $set('lng', $state['lng']);
                     })
                     ->drawingControl()
                     ->defaultLocation([39.526610, -107.727261])
@@ -130,13 +131,13 @@ class LocationResource extends Resource
                 //                    ->dateTime(),
             ])
             ->filters([
-                    Tables\Filters\TernaryFilter::make('processed'),
-                    RadiusFilter::make('radius')
-                        ->latitude('lat')
-                        ->longitude('lng')
-                        ->selectUnit()
-                        ->section('Radius Search'),
-                ]
+                Tables\Filters\TernaryFilter::make('processed'),
+                RadiusFilter::make('radius')
+                    ->latitude('lat')
+                    ->longitude('lng')
+                    ->selectUnit()
+                    ->section('Radius Search'),
+            ]
             )
             ->filtersLayout(FiltersLayout::Dropdown)
             ->actions([
@@ -159,8 +160,8 @@ class LocationResource extends Resource
     public static function getWidgets(): array
     {
         return [
-//            LocationResource\Widgets\LocationMapWidget::class,
-//            LocationResource\Widgets\LocationMapTableWidget::class,
+            //            LocationResource\Widgets\LocationMapWidget::class,
+            //            LocationResource\Widgets\LocationMapTableWidget::class,
         ];
     }
 

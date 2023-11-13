@@ -57,6 +57,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->darkMode()
             ->sidebarCollapsibleOnDesktop(true)
-            ->collapsibleNavigationGroups(true);
+            ->collapsibleNavigationGroups(true)
+            ->databaseNotifications();
     }
 }
