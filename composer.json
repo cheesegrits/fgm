@@ -10,7 +10,7 @@
         "doctrine/dbal": "^3.5",
         "filament/filament": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "10.3.3",
+        "laravel/framework": "^10.3.3",
         "laravel/jetstream": "^3.0",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
