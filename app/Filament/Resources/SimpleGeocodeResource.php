@@ -3,17 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\SimpleGeocodeResource\Pages;
-use App\Filament\Resources\SimpleGeocodeResource\RelationManagers;
 use App\Models\Geocode;
 use Cheesegrits\FilamentGoogleMaps\Columns\MapColumn;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
+use Cheesegrits\FilamentGoogleMaps\Fields\WidgetMap;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model;
 
 class SimpleGeocodeResource extends Resource
 {
@@ -45,9 +47,9 @@ class SimpleGeocodeResource extends Resource
                     ->isLocation()
                     ->updateLatLng()
                     ->reverseGeocode([
-                        'city'   => '%L',
-                        'zip'    => '%z',
-                        'state'  => '%A1',
+                        'city'  => '%L',
+                        'zip'   => '%z',
+                        'state' => '%A1',
                         //                        'street' => '%n z%S',
                     ])
                     ->reverseGeocodeUsing(function (callable $set, array $results) {
@@ -58,6 +60,50 @@ class SimpleGeocodeResource extends Resource
                     ->placeholder('Start typing an address ...')
                     ->maxLength(1024)
                     ->geolocate(),
+
+                WidgetMap::make('widget_map')
+                    ->mapControls([
+                        'zoomControl' => true,
+                    ])
+                    ->markers(function ($model) {
+                        $markers      = [];
+                        $records      = Geocode::all();
+                        $latLngFields = $model::getLatLngAttributes();
+
+                        $records->each(function (Model $record) use (&$markers, $latLngFields) {
+                            $latField = $latLngFields['lat'];
+                            $lngField = $latLngFields['lng'];
+
+                            $markers[] = [
+                                'location' => [
+                                    'lat' => $record->{$latField} ? round(floatval($record->{$latField}), 8) : 0,
+                                    'lng' => $record->{$lngField} ? round(floatval($record->{$lngField}), 8) : 0,
+                                ],
+                                'id' => $record->id,
+                            ];
+                        });
+
+                        return $markers;
+                    })
+                    ->markerAction(Action::make('markerAction')
+                        ->label('Details')
+                        ->infolist([
+                            Section::make([
+                                TextEntry::make('name'),
+                                TextEntry::make('street'),
+                                TextEntry::make('city'),
+                                TextEntry::make('state'),
+                                TextEntry::make('zip'),
+                                TextEntry::make('formatted_address'),
+                            ])
+                                ->columns(3),
+                        ])
+                        ->record(function (array $arguments) {
+                            return array_key_exists('model_id', $arguments) ? Geocode::find($arguments['model_id']) : null;
+                        })
+                        ->modalSubmitAction(false)
+                    )
+                    ->columnSpan(2),
             ]);
     }
 

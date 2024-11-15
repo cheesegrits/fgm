@@ -28,6 +28,8 @@ class LocationMapWidget extends MapWidget
 
     protected static bool $collapsible = true;
 
+    protected static ?string $minHeight = '100vh';
+
     protected function getLayers(): array
     {
         return [
@@ -116,5 +118,4 @@ class LocationMapWidget extends MapWidget
             })
             ->modalSubmitAction(false);
     }
-
 }
