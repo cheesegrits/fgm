@@ -2,19 +2,10 @@
 
 namespace App\Filament\Resources\Geocodes\Geocodes;
 
-use Filament\Schemas\Schema;
-use Filament\Forms\Components\TextInput;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\TernaryFilter;
-use Filament\Actions\ViewAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteBulkAction;
-use App\Filament\Resources\Geocodes\Pages\ListGeocodes;
 use App\Filament\Resources\Geocodes\Pages\CreateGeocode;
-use App\Filament\Resources\Geocodes\Pages\ViewGeocode;
 use App\Filament\Resources\Geocodes\Pages\EditGeocode;
-use App\Filament\Resources\GeocodeResource\Pages;
-use App\Filament\Resources\GeocodeResource\RelationManagers;
+use App\Filament\Resources\Geocodes\Pages\ListGeocodes;
+use App\Filament\Resources\Geocodes\Pages\ViewGeocode;
 use App\Models\Geocode;
 use Cheesegrits\FilamentGoogleMaps\Actions\StaticMapAction;
 use Cheesegrits\FilamentGoogleMaps\Actions\WidgetMapAction;
@@ -22,10 +13,17 @@ use Cheesegrits\FilamentGoogleMaps\Columns\MapColumn;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Cheesegrits\FilamentGoogleMaps\Fields\WidgetMap;
 use Cheesegrits\FilamentGoogleMaps\Filters\RadiusFilter;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,7 +31,7 @@ class GeocodeResource extends Resource
 {
     protected static ?string $model = Geocode::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Schema $schema): Schema
     {
@@ -41,10 +39,10 @@ class GeocodeResource extends Resource
             ->components([
                 TextInput::make('name')
                     ->maxLength(256),
-//                Forms\Components\TextInput::make('lat')
-//                    ->maxLength(32),
-//                Forms\Components\TextInput::make('lng')
-//                    ->maxLength(32),
+                //                Forms\Components\TextInput::make('lat')
+                //                    ->maxLength(32),
+                //                Forms\Components\TextInput::make('lng')
+                //                    ->maxLength(32),
                 TextInput::make('street')
                     ->maxLength(255),
                 TextInput::make('city')
@@ -79,8 +77,8 @@ class GeocodeResource extends Resource
                         'zoomControl' => true,
                     ])
                     ->markers(function ($model) {
-                        $markers = [];
-                        $records = Geocode::all();
+                        $markers      = [];
+                        $records      = Geocode::all();
                         $latLngFields = $model::getLatLngAttributes();
 
                         $records->each(function (Model $record) use (&$markers, $latLngFields) {
@@ -97,7 +95,7 @@ class GeocodeResource extends Resource
 
                         return $markers;
                     })
-                    ->columnSpan(2)
+                    ->columnSpan(2),
             ]);
 
     }
@@ -130,13 +128,13 @@ class GeocodeResource extends Resource
                 MapColumn::make('location'),
             ])
             ->filters([
-                    TernaryFilter::make('processed'),
-                    RadiusFilter::make('radius')
-                        ->latitude('lat')
-                        ->longitude('lng')
-                        ->selectUnit()
-                        ->section('Radius Search'),
-                ]
+                TernaryFilter::make('processed'),
+                RadiusFilter::make('radius')
+                    ->latitude('lat')
+                    ->longitude('lng')
+                    ->selectUnit()
+                    ->section('Radius Search'),
+            ]
             )
             ->filtersLayout(FiltersLayout::Dropdown)
             ->recordActions([

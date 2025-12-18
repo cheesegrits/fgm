@@ -59,6 +59,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->darkMode()
             ->sidebarCollapsibleOnDesktop(true)
-            ->collapsibleNavigationGroups(true);
+            ->collapsibleNavigationGroups(true)
+            ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }
