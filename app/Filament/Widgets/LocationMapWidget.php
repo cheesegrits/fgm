@@ -2,10 +2,10 @@
 
 namespace App\Filament\Widgets;
 
+use Filament\Schemas\Components\Section;
 use App\Models\Location;
 use Cheesegrits\FilamentGoogleMaps\Widgets\MapWidget;
 use Filament\Actions\Action;
-use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 
 class LocationMapWidget extends MapWidget
@@ -14,7 +14,7 @@ class LocationMapWidget extends MapWidget
 
     protected static ?int $sort = 1;
 
-    protected static ?string $pollingInterval = null;
+    protected ?string $pollingInterval = null;
 
     protected static ?bool $clustering = true;
 
@@ -102,7 +102,7 @@ class LocationMapWidget extends MapWidget
     {
         return Action::make('markerAction')
             ->label('Details')
-            ->infolist([
+            ->schema([
                 Section::make([
                     TextEntry::make('name'),
                     TextEntry::make('street'),

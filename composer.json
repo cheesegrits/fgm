@@ -7,29 +7,26 @@
     "require": {
         "php": "^8.0.2",
         "cheesegrits/filament-google-maps": "*",
-        "doctrine/dbal": "^3.5",
-        "filament/filament": "^3.0",
+        "filament/filament": "^4.0",
         "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^10.3.3",
-        "laravel/jetstream": "^3.0",
-        "laravel/sanctum": "^3.0",
+        "laravel/framework": "^12.0",
+        "laravel/jetstream": "^5.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.7",
-        "livewire/livewire": "^3.0",
-        "spatie/laravel-ray": "^1.31",
-        "staudenmeir/eloquent-has-many-deep": "^1.7"
+        "livewire/livewire": "^3.4",
+        "spatie/laravel-ray": "^1.43.2",
+        "staudenmeir/eloquent-has-many-deep": "^v1.19.4"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
-        "filament/upgrade": "^3.0-stable",
+        "filament/upgrade": "^4.0",
         "jeroenzwart/laravel-csv-seeder": "^1.6",
-        "laracasts/generators": "^2.0",
-        "laravel/dusk": "^7.1",
-        "laravel/pint": "^1.0",
-        "laravel/sail": "^1.0.1",
+        "laravel/dusk": "^8.0",
+        "laravel/pint": "^v1.26.0",
         "mockery/mockery": "^1.4.4",
-        "nonsapiens/realaddressfactory": "^2.0",
-        "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.5.10",
+        "nonsapiens/realaddressfactory": "^3.0",
+        "nunomaduro/collision": "^8",
+        "phpunit/phpunit": "^11.5.43",
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
@@ -79,7 +76,7 @@
     "repositories": {
         "local": {
             "type": "path",
-            "url": "../../gits/filament-google-maps-v3"
+            "url": "../../gits/filament-google-maps-v4"
         }
     }
 }

@@ -8,9 +8,9 @@ use Filament\Pages\Page;
 
 class LocationMap extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static string $view = 'filament.pages.location-map';
+    protected string $view = 'filament.pages.location-map';
 
     protected function getHeaderWidgets(): array
     {

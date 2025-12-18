@@ -2,6 +2,11 @@
 
 namespace App\Filament\Widgets;
 
+use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\ViewAction;
+use Filament\Actions\EditAction;
 use App\Models\Location;
 use Cheesegrits\FilamentGoogleMaps\Actions\GoToAction;
 use Cheesegrits\FilamentGoogleMaps\Actions\RadiusAction;
@@ -18,7 +23,7 @@ class LocationMapTableWidget extends MapTableWidget
 
     protected static ?int $sort = 1;
 
-    protected static ?string $pollingInterval = null;
+    protected ?string $pollingInterval = null;
 
     protected static ?bool $clustering = true;
 
@@ -59,22 +64,22 @@ class LocationMapTableWidget extends MapTableWidget
     protected function getFormSchema(): array
     {
         return [
-            Forms\Components\Card::make()->schema([
-                Forms\Components\TextInput::make('name')
+            Section::make()->schema([
+                TextInput::make('name')
                     ->maxLength(256),
-                Forms\Components\TextInput::make('lat')
+                TextInput::make('lat')
                     ->maxLength(32),
-                Forms\Components\TextInput::make('lng')
+                TextInput::make('lng')
                     ->maxLength(32),
-                Forms\Components\TextInput::make('street')
+                TextInput::make('street')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('city')
+                TextInput::make('city')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('state')
+                TextInput::make('state')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('zip')
+                TextInput::make('zip')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('formatted_address')
+                TextInput::make('formatted_address')
                     ->maxLength(1024),
 
             ])
@@ -89,17 +94,17 @@ class LocationMapTableWidget extends MapTableWidget
     protected function getTableColumns(): array
     {
         return [
-            Tables\Columns\TextColumn::make('name')
+            TextColumn::make('name')
                 ->searchable(),
-            Tables\Columns\TextColumn::make('street')
+            TextColumn::make('street')
                 ->searchable(),
-            Tables\Columns\TextColumn::make('city')
+            TextColumn::make('city')
                 ->searchable()
                 ->sortable(),
-            Tables\Columns\TextColumn::make('state')
+            TextColumn::make('state')
                 ->searchable()
                 ->sortable(),
-            Tables\Columns\TextColumn::make('zip'),
+            TextColumn::make('zip'),
         ];
     }
 
@@ -121,10 +126,10 @@ class LocationMapTableWidget extends MapTableWidget
     protected function getTableActions(): array
     {
         return [
-            Tables\Actions\ViewAction::make()
-                ->form($this->getFormSchema()),
-            Tables\Actions\EditAction::make()
-                ->form($this->getFormSchema()),
+            ViewAction::make()
+                ->schema($this->getFormSchema()),
+            EditAction::make()
+                ->schema($this->getFormSchema()),
             GoToAction::make()
                 ->zoom(fn () => 14),
             RadiusAction::make('location'),
