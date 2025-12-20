@@ -22,6 +22,18 @@ class EditLocation extends EditRecord
             DeleteAction::make(),
         ];
     }
+
+    protected function getFormActions(): array
+    {
+        return [
+            $this->getSaveFormAction()
+                ->extraAttributes([
+                    'dusk' => 'filament.admin.action.save',
+                ]),
+            $this->getCancelFormAction(),
+        ];
+    }
+    
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

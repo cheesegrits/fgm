@@ -72,6 +72,7 @@ class SimpleGeocodeResource extends Resource
                     ->mapControls([
                         'zoomControl' => true,
                     ])
+                    ->clustering()
                     ->markers(function ($model) {
                         $markers      = [];
                         $records      = Geocode::all();

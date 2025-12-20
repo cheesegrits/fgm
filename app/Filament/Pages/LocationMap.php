@@ -8,7 +8,7 @@ use Filament\Pages\Page;
 
 class LocationMap extends Page
 {
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-document-text';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
     protected string $view = 'filament.pages.location-map';
 
@@ -16,7 +16,7 @@ class LocationMap extends Page
     {
         return [
             LocationMapTableWidget::class,
-//            LocationMapWidget::class,
+            //            LocationMapWidget::class,
         ];
     }
 

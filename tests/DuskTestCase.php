@@ -6,11 +6,13 @@ use Dotenv\Dotenv;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Dusk\TestCase as BaseTestCase;
 
 abstract class DuskTestCase extends BaseTestCase
 {
     use CreatesApplication;
+    use RefreshDatabase;
 
     /**
      * Prepare for Dusk test execution.
@@ -21,7 +23,7 @@ abstract class DuskTestCase extends BaseTestCase
     public static function prepare()
     {
         if (! static::runningInSail()) {
-            static::startChromeDriver();
+            static::startChromeDriver(['--port=9515']);
         }
     }
 
@@ -38,6 +40,8 @@ abstract class DuskTestCase extends BaseTestCase
             return $items->merge([
                 '--disable-gpu',
                 '--headless',
+                '--ignore-certificate-errors',
+                '--acceptInsecureCerts=true',
             ]);
         })->all());
 
@@ -54,7 +58,7 @@ abstract class DuskTestCase extends BaseTestCase
      *
      * @return bool
      */
-    protected function hasHeadlessDisabled()
+    protected function hasHeadlessDisabled(): bool
     {
         return isset($_SERVER['DUSK_HEADLESS_DISABLED']) ||
                isset($_ENV['DUSK_HEADLESS_DISABLED']);
@@ -65,7 +69,7 @@ abstract class DuskTestCase extends BaseTestCase
      *
      * @return bool
      */
-    protected function shouldStartMaximized()
+    protected function shouldStartMaximized(): bool
     {
         return isset($_SERVER['DUSK_START_MAXIMIZED']) ||
                isset($_ENV['DUSK_START_MAXIMIZED']);

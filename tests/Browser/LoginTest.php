@@ -49,7 +49,7 @@ class LoginTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                ->visit('/admin/locations/1/edit')
+                ->visit('/admin/locations/locations/1/edit')
                 ->assertSee('Edit Location')
                 ->pause(1000)
                 ->assertVisible('#gmimap0');
@@ -66,7 +66,7 @@ class LoginTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-                ->visit('/admin/locations/1/edit')
+                ->visit('/admin/locations/locations/1/edit')
                 ->assertSee('Edit Location')
                 ->waitUntil('window.filamentGoogleMapsAPILoaded')
                 ->pause(500)
@@ -74,14 +74,14 @@ class LoginTest extends DuskTestCase
 
             $browser->screenshot('before');
 
-            $zip1 = $browser->value('#data\\.zip');
+            $zip1 = $browser->value('#form\\.zip');
 
             $browser->clickAtPoint(660, 681)
                 ->pause(1000);
 
             $browser->screenshot('after');
 
-            $zip2 = $browser->value('#data\\.zip');
+            $zip2 = $browser->value('#form\\.zip');
 
 //            $lat2 = $browser->script("return Alpine.mergeProxies(document.querySelector('body #data\\\\.location-alpine')._x_dataStack).fgm.marker.getPosition().lat()");
 //            $lng2 = $browser->script("return Alpine.mergeProxies(document.querySelector('body #data\\\\.location-alpine')._x_dataStack).fgm.marker.getPosition().lng()");

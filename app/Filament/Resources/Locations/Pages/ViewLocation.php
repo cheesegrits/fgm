@@ -23,7 +23,7 @@ class ViewLocation extends ViewRecord
 
     public function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->components([
             TextEntry::make('street'),
             TextEntry::make('city'),
             TextEntry::make('state'),
