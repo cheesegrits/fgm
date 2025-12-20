@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb5c351310f955a591e374a8ccbfd353",
+    "content-hash": "fe386031e13b268e0b44510ad1bc7ef5",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -408,13 +408,20 @@
         },
         {
             "name": "cheesegrits/filament-google-maps",
-            "version": "4.x-dev",
+            "version": "v4.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cheesegrits/filament-google-maps.git",
+                "reference": "d55cc74492f3460ce0c6ea5b51e42a723c2c4adb"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../gits/filament-google-maps-v4",
-                "reference": "b3b234cafab04037f7d87bb0ba7129abbc1497bf"
+                "type": "zip",
+                "url": "https://api.github.com/repos/cheesegrits/filament-google-maps/zipball/d55cc74492f3460ce0c6ea5b51e42a723c2c4adb",
+                "reference": "d55cc74492f3460ce0c6ea5b51e42a723c2c4adb",
+                "shasum": ""
             },
             "require": {
+                "filament/filament": "^4.0",
                 "geocoder-php/google-maps-provider": "^4.7",
                 "guzzlehttp/guzzle": "^7.5",
                 "laravel/prompts": "^0.1.4|^0.2.0|^0.3.0",
@@ -427,7 +434,6 @@
                 "spatie/laravel-package-tools": "^1.9"
             },
             "require-dev": {
-                "filament/filament": "^4.0",
                 "laravel/pint": "^1.6",
                 "nonsapiens/realaddressfactory": "^2.0",
                 "orchestra/testbench": "^8.0|^9.0|^10.0",
@@ -451,6 +457,7 @@
                     "Cheesegrits\\FilamentGoogleMaps\\Tests\\Database\\Factories\\": "tests/database/factories"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -462,9 +469,11 @@
             ],
             "description": "A Google Maps package for Filament PHP with field, column and widget",
             "homepage": "https://github.com/cheesegrits/filament-google-maps",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/cheesegrits/filament-google-maps/issues",
+                "source": "https://github.com/cheesegrits/filament-google-maps/tree/v4.0.1"
+            },
+            "time": "2025-12-20T00:32:11+00:00"
         },
         {
             "name": "chillerlan/php-qrcode",
@@ -3770,16 +3779,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v3.7.2",
+            "version": "v3.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "b13a1e50aad156d382815c64e6c7da4a4fd08407"
+                "reference": "a5384df9fbd3eaf02e053bc49aabc8ace293fc1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/b13a1e50aad156d382815c64e6c7da4a4fd08407",
-                "reference": "b13a1e50aad156d382815c64e6c7da4a4fd08407",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/a5384df9fbd3eaf02e053bc49aabc8ace293fc1c",
+                "reference": "a5384df9fbd3eaf02e053bc49aabc8ace293fc1c",
                 "shasum": ""
             },
             "require": {
@@ -3834,7 +3843,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v3.7.2"
+                "source": "https://github.com/livewire/livewire/tree/v3.7.3"
             },
             "funding": [
                 {
@@ -3842,7 +3851,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-12-17T01:53:59+00:00"
+            "time": "2025-12-19T02:00:29+00:00"
         },
         {
             "name": "mastani/laravel-google-static-map",
@@ -13549,7 +13558,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.0.2"
+        "php": "^8.3"
     },
     "platform-dev": {},
     "plugin-api-version": "2.9.0"
