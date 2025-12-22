@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources\Locations\Pages;
 
-use App\Filament\Resources\Locations\Locations\LocationResource;
+use App\Filament\Resources\Locations\LocationResource;
 use Cheesegrits\FilamentGoogleMaps\Concerns\InteractsWithMaps;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateLocation extends CreateRecord

@@ -2,13 +2,12 @@
 
 namespace App\Filament\Resources\Locations\Pages;
 
-use Filament\Actions\EditAction;
-use Filament\Schemas\Schema;
-use App\Filament\Resources\Locations\Locations\LocationResource;
+use App\Filament\Resources\Locations\LocationResource;
 use Cheesegrits\FilamentGoogleMaps\Infolists\MapEntry;
+use Filament\Actions\EditAction;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Schemas\Schema;
 
 class ViewLocation extends ViewRecord
 {

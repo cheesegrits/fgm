@@ -2,16 +2,15 @@
 
 namespace App\Filament\Resources\Locations\Pages;
 
+use App\Filament\Resources\Locations\LocationResource;
 use Filament\Actions\CreateAction;
-use App\Filament\Resources\Locations\Locations\LocationResource;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListLocations extends ListRecords
 {
     protected static string $resource = LocationResource::class;
 
-    protected static ?string $title = "All Locations";
+    protected static ?string $title = 'All Locations';
 
     protected function getHeaderActions(): array
     {
@@ -23,12 +22,12 @@ class ListLocations extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-//            LocationResource\Widgets\LocationMapWidget::class,
+            //            LocationResource\Widgets\LocationMapWidget::class,
         ];
     }
 
-//    protected function getTableFiltersFormWidth(): string
-//    {
-//        return '4xl';
-//    }
+    //    protected function getTableFiltersFormWidth(): string
+    //    {
+    //        return '4xl';
+    //    }
 }

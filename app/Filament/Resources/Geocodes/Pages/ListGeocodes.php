@@ -3,8 +3,7 @@
 namespace App\Filament\Resources\Geocodes\Pages;
 
 use Filament\Actions\CreateAction;
-use App\Filament\Resources\Geocodes\Geocodes\GeocodeResource;
-use Filament\Pages\Actions;
+use App\Filament\Resources\Geocodes\GeocodeResource;
 use Filament\Resources\Pages\ListRecords;
 
 class ListGeocodes extends ListRecords

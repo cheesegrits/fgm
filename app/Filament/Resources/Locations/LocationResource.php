@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Locations\Locations;
+namespace App\Filament\Resources\Locations;
 
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\TextInput;

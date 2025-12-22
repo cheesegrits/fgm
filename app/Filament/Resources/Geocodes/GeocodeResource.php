@@ -1,34 +1,37 @@
 <?php
 
-namespace App\Filament\Resources\SimpleGeocodes\SimpleGeocodes;
+namespace App\Filament\Resources\Geocodes;
 
-use Filament\Schemas\Schema;
-use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Section;
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\CreateAction;
-use App\Filament\Resources\SimpleGeocodes\Pages\ManageSimpleGeocodes;
-use App\Filament\Resources\SimpleGeocodeResource\Pages;
+use App\Filament\Resources\Geocodes\Pages\CreateGeocode;
+use App\Filament\Resources\Geocodes\Pages\EditGeocode;
+use App\Filament\Resources\Geocodes\Pages\ListGeocodes;
+use App\Filament\Resources\Geocodes\Pages\ViewGeocode;
 use App\Models\Geocode;
+use Cheesegrits\FilamentGoogleMaps\Actions\StaticMapAction;
+use Cheesegrits\FilamentGoogleMaps\Actions\WidgetMapAction;
 use Cheesegrits\FilamentGoogleMaps\Columns\MapColumn;
 use Cheesegrits\FilamentGoogleMaps\Fields\Geocomplete;
 use Cheesegrits\FilamentGoogleMaps\Fields\WidgetMap;
-use Filament\Actions\Action;
+use Cheesegrits\FilamentGoogleMaps\Filters\RadiusFilter;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
-use Filament\Infolists\Components\TextEntry;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
-class SimpleGeocodeResource extends Resource
+class GeocodeResource extends Resource
 {
     protected static ?string $model = Geocode::class;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Schema $schema): Schema
     {
@@ -36,10 +39,10 @@ class SimpleGeocodeResource extends Resource
             ->components([
                 TextInput::make('name')
                     ->maxLength(256),
-                TextInput::make('lat')
-                    ->maxLength(32),
-                TextInput::make('lng')
-                    ->maxLength(32),
+                //                Forms\Components\TextInput::make('lat')
+                //                    ->maxLength(32),
+                //                Forms\Components\TextInput::make('lng')
+                //                    ->maxLength(32),
                 TextInput::make('street')
                     ->maxLength(255),
                 TextInput::make('city')
@@ -48,11 +51,13 @@ class SimpleGeocodeResource extends Resource
                     ->maxLength(255),
                 TextInput::make('zip')
                     ->maxLength(255),
+                Geocomplete::make('formatted_address'),
                 Geocomplete::make('location')
-//                    ->types(['airport'])
-//                    ->placeField('name')
+                    //                    ->types(['airport'])
+                    //                    ->placeField('name')
+                    ->geocodeOnLoad()
                     ->isLocation()
-                    ->updateLatLng()
+//                    ->updateLatLng()
                     ->reverseGeocode([
                         'city'  => '%L',
                         'zip'   => '%z',
@@ -61,7 +66,6 @@ class SimpleGeocodeResource extends Resource
                     ])
                     ->reverseGeocodeUsing(function (callable $set, array $results) {
                         $set('street', $results['address_components'][1]['long_name']);
-                        $set('city', 'I dun bin set');
                     })
                     ->prefix('Choose:')
                     ->placeholder('Start typing an address ...')
@@ -72,7 +76,6 @@ class SimpleGeocodeResource extends Resource
                     ->mapControls([
                         'zoomControl' => true,
                     ])
-                    ->clustering()
                     ->markers(function ($model) {
                         $markers      = [];
                         $records      = Geocode::all();
@@ -87,61 +90,79 @@ class SimpleGeocodeResource extends Resource
                                     'lat' => $record->{$latField} ? round(floatval($record->{$latField}), 8) : 0,
                                     'lng' => $record->{$lngField} ? round(floatval($record->{$lngField}), 8) : 0,
                                 ],
-                                'id' => $record->id,
                             ];
                         });
 
                         return $markers;
                     })
-                    ->markerAction(Action::make('markerAction')
-                        ->label('Details')
-                        ->schema([
-                            Section::make([
-                                TextEntry::make('name'),
-                                TextEntry::make('street'),
-                                TextEntry::make('city'),
-                                TextEntry::make('state'),
-                                TextEntry::make('zip'),
-                                TextEntry::make('formatted_address'),
-                            ])
-                                ->columns(3),
-                        ])
-                        ->record(function (array $arguments) {
-                            return array_key_exists('model_id', $arguments) ? Geocode::find($arguments['model_id']) : null;
-                        })
-                        ->modalSubmitAction(false)
-                    )
                     ->columnSpan(2),
             ]);
+
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
+                TextColumn::make('name')
+                    ->searchable(),
+
+                //                Tables\Columns\TextColumn::make('lat'),
+                //
+                //                Tables\Columns\TextColumn::make('lng'),
+
+                TextColumn::make('street'),
+
+                TextColumn::make('city')
+                    ->searchable(),
+
+                TextColumn::make('state')
+                    ->searchable(),
+
+                TextColumn::make('zip'),
+
+                //                Tables\Columns\TextColumn::make('formatted_address')
+                //                    ->wrap()
+                //                    ->searchable(),
+
                 MapColumn::make('location'),
             ])
             ->filters([
-                //
-            ])
+                TernaryFilter::make('processed'),
+                RadiusFilter::make('radius')
+                    ->latitude('lat')
+                    ->longitude('lng')
+                    ->selectUnit()
+                    ->section('Radius Search'),
+            ]
+            )
+            ->filtersLayout(FiltersLayout::Dropdown)
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
-                DeleteAction::make(),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ])
-            ->emptyStateActions([
-                CreateAction::make(),
+                DeleteBulkAction::make(),
+                StaticMapAction::make(),
+                WidgetMapAction::make(),
             ]);
+
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => ManageSimpleGeocodes::route('/'),
+            'index'  => ListGeocodes::route('/'),
+            'create' => CreateGeocode::route('/create'),
+            'view'   => ViewGeocode::route('/{record}'),
+            'edit'   => EditGeocode::route('/{record}/edit'),
         ];
     }
 }

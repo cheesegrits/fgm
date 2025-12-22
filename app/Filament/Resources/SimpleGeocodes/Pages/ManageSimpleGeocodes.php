@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources\SimpleGeocodes\Pages;
 
-use Filament\Actions\CreateAction;
-use App\Filament\Resources\SimpleGeocodes\SimpleGeocodes\SimpleGeocodeResource;
+use App\Filament\Resources\SimpleGeocodes\SimpleGeocodeResource;
 use Cheesegrits\FilamentGoogleMaps\Concerns\InteractsWithMaps;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ManageRecords;
 
 class ManageSimpleGeocodes extends ManageRecords

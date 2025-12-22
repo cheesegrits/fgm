@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Customers\Customers;
+namespace App\Filament\Resources\Customers;
 
 use Filament\Schemas\Schema;
 use App\Filament\Resources\Customers\Pages\ListCustomers;
